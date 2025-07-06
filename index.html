@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kien Anh Dinh's Creative Orbit</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for 'Playfair Display' -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Tone.js CDN for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        /* Custom styles for animations and layout beyond Tailwind's direct utility classes */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background for a space feel */
+            overflow: hidden; /* Hide scrollbars, relying on content fitting the screen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Background "All about me" text */
+        .background-text {
+            position: fixed; /* Fixed position relative to viewport */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            font-family: 'Georgia', serif; /* A stylish, classic font */
+            font-size: 15vmin; /* Very large, responsive font size */
+            color: rgba(255, 255, 255, 0.05); /* Very subtle white color */
+            font-weight: bold;
+            letter-spacing: 0.5vmin;
+            pointer-events: none; /* Ensure it doesn't interfere with clicks */
+            z-index: 0; /* Place it in the very background */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+
+        /* Container for the central "you" and orbiting "skills" */
+        .orbit-container {
+            position: relative;
+            width: 100vmin; /* Increased container size to accommodate larger orbits */
+            height: 100vmin;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1; /* Ensure orbit container is above background text */
+        }
+
+        /* Central "You" element - now styled as a Sun */
+        .core-you {
+            width: 15vmin;
+            height: 15vmin;
+            /* More complex and fiery gradient for the sun */
+            background: radial-gradient(circle at 50% 50%, #fffb00 0%, #ffc000 30%, #ff8c00 60%, #ff4500 100%);
+            border-radius: 50%;
+            display: flex; /* For centering content */
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            color: white; /* Changed text color to white */
+            font-family: 'Playfair Display', serif; /* Changed font to Playfair Display */
+            font-size: 2.5vmin;
+            font-weight: 700; /* Adjusted font weight for Playfair Display */
+            /* Stronger, multi-layered glow for sun effect */
+            box-shadow: 0 0 40px rgba(255, 140, 0, 0.9), /* Orange glow */
+                        0 0 70px rgba(255, 222, 0, 0.6), /* Yellow glow */
+                        0 0 100px rgba(255, 69, 0, 0.4); /* Reddish outer glow */
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative; /* For z-index to be above orbits */
+            z-index: 10;
+            text-align: center; /* Ensures multi-line text is centered if it wraps */
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8); /* Enhanced text shadow for better readability */
+            animation: sunGlow 3s ease-in-out infinite alternate; /* Pulsing glow animation */
+        }
+
+        .core-you:hover {
+            transform: scale(1.05);
+        }
+
+        /* Keyframes for sun glow animation */
+        @keyframes sunGlow {
+            from {
+                box-shadow: 0 0 40px rgba(255, 140, 0, 0.9),
+                            0 0 70px rgba(255, 222, 0, 0.6),
+                            0 0 100px rgba(255, 69, 0, 0.4);
+            }
+            to {
+                box-shadow: 0 0 50px rgba(255, 165, 0, 1), /* Slightly larger orange glow */
+                            0 0 90px rgba(255, 230, 0, 0.8), /* Larger yellow glow */
+                            0 0 120px rgba(255, 80, 0, 0.5); /* Larger reddish outer glow */
+            }
+        }
+
+        /* Skill "planets" */
+        .skill-planet {
+            position: absolute;
+            width: 12vmin; /* Increased size for easier clicking */
+            height: 12vmin; /* Increased size for easier clicking */
+            background-color: #fca311; /* Orange color */
+            border-radius: 50%;
+            display: flex; /* Ensures content is centered */
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            color: #1a202c;
+            font-size: 2.2vmin; /* Adjusted font size for readability within larger planets */
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(252, 163, 17, 0.5);
+            text-align: center;
+            padding: 0.5vmin;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            z-index: 5; /* Below core-you */
+        }
+
+        .skill-planet:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(252, 163, 17, 0.8);
+        }
+
+        /* Specific colors for skill planets (adjusted for 5 planets) */
+        .skill-planet:nth-child(2) { background-color: #ef4444; color: white; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); } /* Red - Analytical Thinking */
+        .skill-planet:nth-child(3) { background-color: #22c55e; color: white; box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); } /* Green - Communication Skills */
+        .skill-planet:nth-child(4) { background-color: #3b82f6; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); } /* Blue - Quick Learner */
+        .skill-planet:nth-child(5) { background-color: #a855f7; color: white; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); } /* Purple - Education */
+        .skill-planet:nth-child(6) { background-color: #0d9488; color: white; box-shadow: 0 0 15px rgba(13, 148, 136, 0.5); } /* Teal - Availability */
+
+
+        /* Orbit animation (pure CSS) */
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg); }
+        }
+
+        .skill-planet {
+            --orbit-radius: 25vmin; /* Default orbit radius, will be overridden */
+            animation: orbit linear infinite;
+        }
+
+        /* Adjust orbit radius and duration for 5 planets for visual variety and spacing */
+        .skill-planet:nth-child(2) { --orbit-radius: 35vmin; animation-duration: 25s; } /* Analytical Thinking - further out */
+        .skill-planet:nth-child(3) { --orbit-radius: 45vmin; animation-duration: 30s; } /* Communication Skills - even further */
+        .skill-planet:nth-child(4) { --orbit-radius: 40vmin; animation-duration: 22s; } /* Quick Learner */
+        .skill-planet:nth-child(5) { --orbit-radius: 50vmin; animation-duration: 33s; } /* Education - furthest */
+        .skill-planet:nth-child(6) { --orbit-radius: 42vmin; animation-duration: 27s; } /* Availability */
+
+
+        /* Modal for skill details */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #2d3748; /* Darker blue-gray */
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: white;
+            position: relative; /* Keep relative for internal content positioning if needed */
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal close button - now fixed to viewport */
+        .modal-close-btn {
+            position: fixed; /* Fixed to the viewport */
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            z-index: 101; /* Higher than modal-overlay to ensure it's always on top */
+        }
+
+        .modal-close-btn:hover {
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .core-you {
+                font-size: 3vmin;
+            }
+            .skill-planet {
+                font-size: 2.8vmin; /* Slightly larger on smaller screens too */
+                width: 14vmin; /* Increased size on smaller screens */
+                height: 14vmin; /* Increased size on smaller screens */
+            }
+            .skill-planet {
+                --orbit-radius: 45vmin; /* Adjust for smaller screens */
+            }
+            .skill-planet:nth-child(2) { --orbit-radius: 43vmin; animation-duration: 27s; }
+            .skill-planet:nth-child(3) { --orbit-radius: 53vmin; animation-duration: 32s; }
+            .skill-planet:nth-child(4) { --orbit-radius: 48vmin; animation-duration: 25s; }
+            .skill-planet:nth-child(5) { --orbit-radius: 58vmin; animation-duration: 35s; }
+            .skill-planet:nth-child(6) { --orbit-radius: 50vmin; animation-duration: 29s; }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Subtle background particles (optional, but adds to space theme) */
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Rocket styling and fixed position above the Sun */
+        .rocket {
+            position: absolute;
+            width: 15vmin; /* Size of the rocket */
+            height: 15vmin;
+            top: 25%; /* Adjust this value to move it up/down relative to center */
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center it precisely */
+            z-index: 15; /* Ensure it's above the Sun (z-index 10) but below modal (z-index 100) */
+            pointer-events: none; /* Make sure it doesn't block clicks on elements behind it */
+            /* No animation property here, as it should be still */
+        }
+
+        /* Keyframes for subtle rocket thrust pulse (applied to flame) */
+        @keyframes rocketThrustPulse {
+            from { transform: scaleY(1); opacity: 1; }
+            to { transform: scaleY(1.2); opacity: 0.8; }
+        }
+
+        /* Rocket Colors (Black, White, Green) */
+        .rocket-body { fill: #FFFFFF; } /* White */
+        .rocket-nose { fill: #000000; } /* Black */
+        .rocket-fin { fill: #000000; } /* Black */
+        .rocket-flame { fill: #66BB6A; } /* Green */
+        .rocket-flame-inner { fill: #A5D6A7; } /* Lighter Green */
+        .rocket-logo-text {
+            font-family: 'Arial', sans-serif; /* Simple font for the logo text */
+            font-size: 12px; /* Increased font size for better visibility */
+            fill: black; /* Changed fill to black */
+            font-weight: bold;
+            text-anchor: middle; /* Center text horizontally */
+            dominant-baseline: central; /* Center text vertically */
+        }
+    </style>
+</head>
+<body>
+    <!-- Background "All about me" text -->
+    <div class="background-text">
+        All about me
+    </div>
+
+    <div class="orbit-container">
+        <!-- Central "You" element -->
+        <div id="coreYou" class="core-you">
+            Kien Anh Dinh
+        </div>
+
+        <!-- Skill "planets" -->
+        <div class="skill-planet" data-skill="analytical-thinking">
+            Analytical Thinking
+        </div>
+        <div class="skill-planet" data-skill="communication-skills">
+            Comm. Skills
+        </div>
+        <div class="skill-planet" data-skill="quick-learner">
+            Quick Learner
+        </div>
+        <div class="skill-planet" data-skill="education">
+            Education
+        </div>
+        <div class="skill-planet" data-skill="availability">
+            Availability
+        </div>
+    </div>
+
+    <!-- Rocket SVG with Tribus Advisory logo -->
+    <svg class="rocket" viewBox="0 0 100 100">
+        <!-- Rocket Body -->
+        <rect class="rocket-body" x="40" y="20" width="20" height="60" rx="5"></rect>
+        <!-- Nose Cone -->
+        <polygon class="rocket-nose" points="40,20 60,20 50,0"></polygon>
+        <!-- Fins -->
+        <polygon class="rocket-fin" points="40,60 30,70 40,80"></polygon>
+        <polygon class="rocket-fin" points="60,60 70,70 60,80"></polygon>
+        <!-- Thruster/Flame -->
+        <path class="rocket-flame" d="M45 80 Q50 95 55 80 L50 100 Z" style="animation: rocketThrustPulse 1s ease-in-out infinite alternate; transform-origin: 50% 90%;"></path>
+        <path class="rocket-flame-inner" d="M47 80 Q50 90 53 80 L50 95 Z" style="animation: rocketThrustPulse 1s ease-in-out infinite alternate; transform-origin: 50% 90%;"></path>
+
+        <!-- Tribus Name Text on Rocket -->
+        <text x="50" y="50" class="rocket-logo-text" transform="rotate(90 50 50)">Tribus</text>
+    </svg>
+
+    <!-- Modal for displaying skill details -->
+    <div id="skillModal" class="modal-overlay">
+        <!-- Moved close button here, outside modal-content -->
+        <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+        <div class="modal-content">
+            <h2 id="modalTitle" class="text-3xl font-bold mb-4 text-purple-400"></h2>
+            <p id="modalDescription" class="text-lg leading-relaxed text-gray-300"></p>
+            <div id="modalLinks" class="mt-6 flex flex-wrap gap-4"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Tone.js requires user interaction to start audio context
+            // It's good practice to start it on the first user interaction
+            document.documentElement.addEventListener('mousedown', () => {
+                if (Tone.context.state !== 'running') {
+                    Tone.start();
+                    console.log('Audio context started');
+                }
+            }, { once: true });
+
+
+            const coreYou = document.getElementById('coreYou');
+            const skillPlanets = document.querySelectorAll('.skill-planet');
+            const skillModal = document.getElementById('skillModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalLinks = document.getElementById('modalLinks');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            // Initialize a simple synth for click sounds with a softer tone and quicker envelope
+            const synth = new Tone.Synth({
+                oscillator: {
+                    type: "sine" // Use sine wave for a softer, purer tone
+                },
+                envelope: {
+                    attack: 0.001, // Very quick attack
+                    decay: 0.1,   // Quick decay
+                    sustain: 0.0, // No sustain
+                    release: 0.1  // Quick release
+                }
+            }).toDestination();
+
+            // Adjust the overall volume of the synth (optional, but can fine-tune)
+            synth.volume.value = -10; // Lower volume by 10dB
+
+            // Define your skills data here
+            const skillsData = {
+                "analytical-thinking": {
+                    title: "Strong Analytical Thinking",
+                    description: "I possess a keen ability to break down complex problems, identify root causes, and develop logical, data-driven solutions. My approach involves rigorous evaluation and critical assessment to ensure robust outcomes.",
+                    links: []
+                },
+                "communication-skills": {
+                    title: "High Level of Communication Skills",
+                    description: "Whether presenting intricate concepts, collaborating with diverse teams, or engaging stakeholders, I excel at conveying information clearly, concisely, and persuasively. My focus is on fostering understanding and effective collaboration.",
+                    links: []
+                },
+                "quick-learner": {
+                    title: "Quick and Enthusiastic Learner",
+                    description: "I am highly adaptable and thrive in dynamic environments, rapidly acquiring new knowledge, skills, and technologies. My genuine enthusiasm for learning drives continuous improvement and allows me to quickly contribute to new challenges.",
+                    links: []
+                },
+                "education": {
+                    title: "Education",
+                    description: "I am a final year student pursuing a Bachelor of Business, majoring in Accounting. My expected graduation date is in mid-2026.",
+                    links: []
+                },
+                "availability": {
+                    title: "Availability",
+                    description: "I am available for 2-3 days per week. In the upcoming semester starting in July, I am available for Mondays, Tuesdays, and Fridays.",
+                    links: []
+                }
+            };
+
+            // Function to play a click sound
+            const playClickSound = (note = "C4", duration = "16n") => {
+                if (Tone.context.state === 'running') {
+                    synth.triggerAttackRelease(note, duration);
+                } else {
+                    console.warn('Audio context not running. Click anywhere to enable sound.');
+                }
+            };
+
+            // Function to open the modal
+            const openModal = (skillId) => {
+                const skill = skillsData[skillId];
+                if (skill) {
+                    modalTitle.textContent = skill.title;
+                    modalDescription.textContent = skill.description;
+                    modalLinks.innerHTML = ''; // Clear previous links
+
+                    if (skill.links && skill.links.length > 0) {
+                        skill.links.forEach(link => {
+                            const anchor = document.createElement('a');
+                            anchor.href = link.url;
+                            anchor.textContent = link.text;
+                            anchor.target = "_blank"; // Open in new tab
+                            anchor.rel = "noopener noreferrer"; // Security best practice
+                            anchor.className = "px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200 shadow-md";
+                            modalLinks.appendChild(anchor);
+                        });
+                    } else {
+                         modalLinks.innerHTML = '<p class="text-gray-400 text-sm">No external links available for this skill.</p>';
+                    }
+
+                    skillModal.classList.add('active');
+                    playClickSound("G4", "16n");
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+
+            // Function to close the modal
+            const closeModal = () => {
+                skillModal.classList.remove('active');
+                playClickSound("C4", "16n");
+                document.body.style.overflow = 'auto';
+            };
+
+            // Event listeners for skill planets
+            skillPlanets.forEach(planet => {
+                planet.addEventListener('click', () => {
+                    const skillId = planet.dataset.skill;
+                    playClickSound("E4", "16n");
+                    openModal(skillId);
+                });
+            });
+
+            // Event listener for closing the modal (on 'x' button)
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Event listener for closing the modal (on overlay click)
+            skillModal.addEventListener('click', (e) => {
+                if (e.target === skillModal) { // Close if clicked on overlay itself, not content
+                    closeModal();
+                }
+            });
+
+            // Optional: Add some background particles for ambiance
+            const createParticles = (num) => {
+                const container = document.querySelector('.orbit-container');
+                for (let i = 0; i < num; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    const size = Math.random() * 3 + 1; // Size between 1px and 4px
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.animationDuration = `${Math.random() * 10 + 5}s`; // 5-15s twinkle
+                    particle.style.animationDelay = `${Math.random() * 5}s`;
+                    container.appendChild(particle);
+                }
+            };
+
+            createParticles(80); // Adjust number of particles
+        });
+    </script>
+</body>
+</html>
