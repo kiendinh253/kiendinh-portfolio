@@ -122,12 +122,17 @@
             box-shadow: 0 0 25px rgba(252, 163, 17, 0.8);
         }
 
-        /* Specific colors for skill planets (adjusted for 5 planets) */
+        /* Specific colors for skill planets (adjusted for 6 planets) */
         .skill-planet:nth-child(2) { background-color: #ef4444; color: white; box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); } /* Red - Analytical Thinking */
         .skill-planet:nth-child(3) { background-color: #22c55e; color: white; box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); } /* Green - Communication Skills */
         .skill-planet:nth-child(4) { background-color: #3b82f6; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); } /* Blue - Quick Learner */
         .skill-planet:nth-child(5) { background-color: #a855f7; color: white; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); } /* Purple - Education */
         .skill-planet:nth-child(6) { background-color: #0d9488; color: white; box-shadow: 0 0 15px rgba(13, 148, 136, 0.5); } /* Teal - Availability */
+        .skill-planet:nth-child(7) { 
+            background-color: #FFC107; /* Brighter gold */
+            color: white; /* White text for better contrast */
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.7), 0 0 35px rgba(255, 193, 7, 0.4); /* Stronger, multi-layered glow */
+        }
 
 
         /* Orbit animation (pure CSS) */
@@ -141,12 +146,13 @@
             animation: orbit linear infinite;
         }
 
-        /* Adjust orbit radius and duration for 5 planets for visual variety and spacing */
-        .skill-planet:nth-child(2) { --orbit-radius: 35vmin; animation-duration: 25s; } /* Analytical Thinking - further out */
-        .skill-planet:nth-child(3) { --orbit-radius: 45vmin; animation-duration: 30s; } /* Communication Skills - even further */
+        /* Adjust orbit radius and duration for 6 planets for visual variety and spacing */
+        .skill-planet:nth-child(2) { --orbit-radius: 35vmin; animation-duration: 25s; } /* Analytical Thinking */
+        .skill-planet:nth-child(3) { --orbit-radius: 45vmin; animation-duration: 30s; } /* Communication Skills */
         .skill-planet:nth-child(4) { --orbit-radius: 40vmin; animation-duration: 22s; } /* Quick Learner */
-        .skill-planet:nth-child(5) { --orbit-radius: 50vmin; animation-duration: 33s; } /* Education - furthest */
+        .skill-planet:nth-child(5) { --orbit-radius: 50vmin; animation-duration: 33s; } /* Education */
         .skill-planet:nth-child(6) { --orbit-radius: 42vmin; animation-duration: 27s; } /* Availability */
+        .skill-planet:nth-child(7) { --orbit-radius: 30vmin; animation-duration: 20s; } /* What I want from this role */
 
 
         /* Modal for skill details */
@@ -227,6 +233,7 @@
             .skill-planet:nth-child(4) { --orbit-radius: 48vmin; animation-duration: 25s; }
             .skill-planet:nth-child(5) { --orbit-radius: 58vmin; animation-duration: 35s; }
             .skill-planet:nth-child(6) { --orbit-radius: 50vmin; animation-duration: 29s; }
+            .skill-planet:nth-child(7) { --orbit-radius: 40vmin; animation-duration: 23s; }
 
             .modal-content {
                 padding: 1.5rem;
@@ -309,6 +316,9 @@
         <div class="skill-planet" data-skill="availability">
             Availability
         </div>
+        <div class="skill-planet" data-skill="what-i-want">
+            What I want from this role
+        </div>
     </div>
 
     <!-- Rocket SVG with Tribus Advisory logo -->
@@ -325,7 +335,9 @@
         <path class="rocket-flame-inner" d="M47 80 Q50 90 53 80 L50 95 Z" style="animation: rocketThrustPulse 1s ease-in-out infinite alternate; transform-origin: 50% 90%;"></path>
 
         <!-- Tribus Name Text on Rocket -->
-        <text x="50" y="50" class="rocket-logo-text" transform="rotate(90 50 50)">Tribus</text>
+        <!-- x="50" y="50" is the center of the viewBox. Adjust y to move it up/down on the rocket body. -->
+        <!-- transform="rotate(90 50 50)" rotates the text vertically. -->
+        <text x="50" y="45" class="rocket-logo-text" transform="rotate(90 50 45)">Tribus</text>
     </svg>
 
     <!-- Modal for displaying skill details -->
@@ -379,27 +391,32 @@
             const skillsData = {
                 "analytical-thinking": {
                     title: "Strong Analytical Thinking",
-                    description: "I possess a keen ability to break down complex problems, identify root causes, and develop logical, data-driven solutions. My approach involves rigorous evaluation and critical assessment to ensure robust outcomes.",
+                    description: "In a Management Accounting project, I conducted a break-even and cost-volume-profit analysis for a simulated business, applying flexible budgeting, identifying and simplifying non-value-added activities and utilising the target costing approach. My recommendations improved the projected margins, and the task received a High Distinction.",
                     links: []
                 },
                 "communication-skills": {
                     title: "High Level of Communication Skills",
-                    description: "Whether presenting intricate concepts, collaborating with diverse teams, or engaging stakeholders, I excel at conveying information clearly, concisely, and persuasively. My focus is on fostering understanding and effective collaboration.",
+                    description: "As an active team member in the Association of Vietnamese Students in Queensland, I worked across Logistics and Event departments to organise events for diverse audiences, strengthening my ability to tailor communication styles and collaborate effectively. This is also shown in my role as a Business Ambassador in the recent event, idX, which helped the participants have a positive experience and navigate throughout the event smoothly.",
                     links: []
                 },
                 "quick-learner": {
                     title: "Quick and Enthusiastic Learner",
-                    description: "I am highly adaptable and thrive in dynamic environments, rapidly acquiring new knowledge, skills, and technologies. My genuine enthusiasm for learning drives continuous improvement and allows me to quickly contribute to new challenges.",
+                    description: "Not only am I good at absorbing new information, but I also actively seek it out and rapidly integrate it into my workflow. Last semester, my group was tasked with producing an income tax return for a client using the HandiTax software. Initially, I had limited experience with this software, but instead of feeling overwhelmed, I immediately immersed myself in learning with the available resources on the internet. As a result, I became proficient enough to lead the group and complete the assignment in time with flying colours.",
                     links: []
                 },
                 "education": {
                     title: "Education",
-                    description: "I am a final year student pursuing a Bachelor of Business, majoring in Accounting. My expected graduation date is in mid-2026.",
+                    description: "I am currently in my final year of the Bachelor of Business (Accounting) at Queensland University of Technology. I have always had a deep passion for interpreting valuable insights from financial data to support businesses with their decision-making. Having said that, studying an Accounting major has helped me to acquire strong analytical skills and a solid financial foundation through various projects and case studies in my coursework.",
                     links: []
                 },
                 "availability": {
                     title: "Availability",
-                    description: "I am available for 2-3 days per week. In the upcoming semester starting in July, I am available for Mondays, Tuesdays, and Fridays.",
+                    description: "Regarding my availability in a typical week, I am free from university on Mondays, Tuesdays, and Fridays based on my next semester timetable. I believe this would offer flexibility for part-time engagement even during my academic semester.",
+                    links: []
+                },
+                "what-i-want": {
+                    title: "What I want from this role",
+                    description: "I am excited about this opportunity because it allows me to apply my academic knowledge to real-world consulting projects, collaborate with industry professionals, and gain practical experience in procurement, strategy development, and business analysis fields. I am eager to contribute meaningfully to client outcomes while continuously learning in a professional environment like Tribus Advisory.",
                     links: []
                 }
             };
