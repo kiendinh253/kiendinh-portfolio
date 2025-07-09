@@ -391,12 +391,12 @@
             const skillsData = {
                 "analytical-thinking": {
                     title: "Strong Analytical Thinking",
-                    description: "In a Management Accounting project, I conducted a break-even and cost-volume-profit analysis for a simulated business, applying flexible budgeting, identifying and simplifying non-value-added activities and utilising the target costing approach. My recommendations improved the projected margins, and the task received a High Distinction.",
+                    description: "In a Management Accounting project, I conducted a cost-volume-profit analysis of a simulated bike manufacturing business. By interpreting cost behaviour and profitability scenarios using a flex budget, I proposed a pricing strategy where the business cuts off specific non-value-added activities and uses the target-costing approach, ultimately improving the firm’s projected margins by 20%. The assignment received an overall HD and highlighted my ability to analyse financial data to support decision-making, a core skill I believe is valuable in consulting and procurement analysis.",
                     links: []
                 },
                 "communication-skills": {
                     title: "High Level of Communication Skills",
-                    description: "As an active team member in the Association of Vietnamese Students in Queensland, I worked across Logistics and Event departments to organise events for diverse audiences, strengthening my ability to tailor communication styles and collaborate effectively. This is also shown in my role as a Business Ambassador in the recent event, idX, which helped the participants have a positive experience and navigate throughout the event smoothly.",
+                    description: "As an active team member in the Association of Vietnamese Students in Queensland, I worked across Logistics and Event departments to organise events for diverse audiences, effectively tailored communication styles and collaborated seamlessly, resulting in successful and engaging experiences for varied audiences. This is also shown in my role as a Business Ambassador in the recent event, idX, which ensured participants enjoyed a positive and smooth experience, significantly enhancing their engagement and navigation throughout the event.",
                     links: []
                 },
                 "quick-learner": {
@@ -416,7 +416,15 @@
                 },
                 "what-i-want": {
                     title: "What I want from this role",
-                    description: "I am excited about this opportunity because it allows me to apply my academic knowledge to real-world consulting projects, collaborate with industry professionals, and gain practical experience in procurement, strategy development, and business analysis fields. I am eager to contribute meaningfully to client outcomes while continuously learning in a professional environment like Tribus Advisory.",
+                    description: `
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>I am excited about this opportunity because it allows me to apply my academic knowledge to real-world consulting projects.</li>
+                            <li>I seek to collaborate with industry professionals.</li>
+                            <li>I aim to gain practical experience in procurement, strategy development, and business analysis fields.</li>
+                            <li>I am eager to contribute meaningfully to client outcomes.</li>
+                            <li>I wish to continuously learn and grow in a professional environment like Tribus Advisory.</li>
+                        </ul>
+                    `,
                     links: []
                 }
             };
@@ -435,13 +443,14 @@
                 const skill = skillsData[skillId];
                 if (skill) {
                     modalTitle.textContent = skill.title;
-                    modalDescription.textContent = skill.description;
+                    // For descriptions that are HTML, set innerHTML
+                    modalDescription.innerHTML = skill.description;
                     modalLinks.innerHTML = ''; // Clear previous links
 
                     if (skill.links && skill.links.length > 0) {
                         skill.links.forEach(link => {
                             const anchor = document.createElement('a');
-                            anchor.href = link.url;
+                            anchor.href = link;
                             anchor.textContent = link.text;
                             anchor.target = "_blank"; // Open in new tab
                             anchor.rel = "noopener noreferrer"; // Security best practice
